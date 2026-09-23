@@ -39,7 +39,9 @@ Do not replace these scripts with `DSH_HOME=… dsh …`: `dsh` on PATH may be a
 
 `dsh plugin add` runs pnpm 11 inside the user's profile, so the package must:
 
-- have no `prepare`, `prepack`, `preinstall`, `install` or `postinstall` script (`github:` installs would fail)
+- have no `prepare` script: pnpm blocks it on `github:` installs, which then fail
+- have no `preinstall`, `install` or `postinstall` script: pnpm blocks build scripts in the user's profile
+- have no `prepack` script: it does not break installs, but the committed `lib/` is the build, and a pack-time rebuild could ship something other than what CI tested
 - take runtime dependencies only from the npm registry, without build scripts
 - list only `@deepseek-ai/*` packages as peers (peers are not installed for users)
 
