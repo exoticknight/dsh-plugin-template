@@ -28,7 +28,7 @@ Everything a DSH plugin built from this template should have, inside and outside
 | Dependabot                   | Actions + npm dev dependencies weekly; `@deepseek-ai/*` ignored                                                                                                                         | `.github/dependabot.yml`                    |
 | Issue templates              | Bug report asks for plugin and DSH version                                                                                                                                              | `.github/ISSUE_TEMPLATE/`                   |
 | Docs                         | `README.md` (Chinese) + `README.en.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`, `docs/development.md`, `docs/compatibility.md`                                                       |                                             |
-| README badges | Row 1: npm (if published), CI, Release, License, DSH version, RED. Row 2: dsh.pub plus confirmed listings only. Every plugin badge uses this plugin's owner/name (`badges.md`) | |
+| README badges | Row 1: npm (if published), CI, Release, License, DSH version, RED. Row 2: confirmed listings only, none by default. Every plugin badge uses this plugin's owner/name (`badges.md`) | |
 | Images                       | Under `docs/images/`, `export-ignore`, linked by absolute `raw.githubusercontent.com` URLs so npm renders them                                                                          |                                             |
 | RED                          | `red.toml` + `RED.md`; `.research/` and `.evolve/` local-only                                                                                                                           | `red check --json`                          |
 | Agent entry                  | `AGENTS.md` (+ `CLAUDE.md` → `@AGENTS.md`) and `playbooks/`                                                                                                                             |                                             |
@@ -65,6 +65,6 @@ Everything a DSH plugin built from this template should have, inside and outside
 
 | Item        | Expectation                                                                                 |
 | ----------- | ------------------------------------------------------------------------------------------- |
-| dsh.pub | Listed; badge shows "listed" |
+| dsh.pub | Listed; badge added after the listing was confirmed |
 | Directories | Automatic ones picked up; approved submissions made once and tracked in `.research/listings.md` (`50-listings.md`) |
 | Local tools | `gh` logged in, pnpm, a DSH CLI via `DSH_BIN` or a project-local `@deepseek-ai/dsh` (never PATH, see `installing.md`); `npm login` only for the first publish; `red` CLI optional |

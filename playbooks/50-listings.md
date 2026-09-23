@@ -36,7 +36,7 @@ Section A needs no submission. Wait a day after the topics are set, then search 
 
 Submissions are public actions taken in the user's name. First show the user one list: each directory, the route (form, issue or PR), and the text that will be sent. Continue only with the ones they approve.
 
-- **Web forms** (dsh.pub, dshplugin.dev, DSH Plugin Store): give the user the URL and the prepared text; the user submits. dsh.pub comes first because its badge is already in the README.
+- **Web forms** (dsh.pub, dshplugin.dev, DSH Plugin Store): give the user the URL and the prepared text; the user submits. Start with dsh.pub.
 - **Issues** (for example HackSing, cccakeee, dshplugin-me): `gh issue create -R <repo> --title "…" --body-file <file>`, or the site's issue form in the browser when it uses one.
 - **Pull requests** to curated lists:
 
@@ -69,7 +69,7 @@ Submission routes, links and statuses stay in the tracker, never in the README (
 
 ## Done when
 
-- [ ] dsh.pub lists the plugin and its badge shows "listed"
+- [ ] dsh.pub lists the plugin
 - [ ] Every approved submission has been made once and is recorded in `.research/listings.md`
 - [ ] Every confirmed listing that has a per-plugin badge shows it in both READMEs, pointing at this plugin
 - [ ] `reference/directories.md` reflects any rule changes found along the way
