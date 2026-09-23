@@ -28,20 +28,6 @@ called dsh-foo that … Publish it to npm.
 
 The agent creates your repository, initializes it, implements the feature, sets up GitHub and npm, ships the first release, and helps you submit it to plugin directories. It only stops for what must be you: logging in to npm and the first publish.
 
-## Why
-
-Every new plugin used to mean an AI rediscovering DSH's plugin layout from scratch, then several rounds of fixing release configuration. This template does that work once:
-
-| Before                                                                 | With the template                                                             |
-| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| The AI re-learns `dsh.bundle`, `cordis.patch.yml` and the client bundle format every time | A working host / client skeleton with contract tests; the AI writes features  |
-| Installs from GitHub or dsh.pub fail on missing entry files             | `lib/` is committed, rebuilt by a pre-commit hook, and checked by CI          |
-| Manual `npm publish`; tag, version and Release drift apart              | Push a tag: gate → CI → npm → GitHub Release                                  |
-| An npm token sits in repository secrets                                 | Trusted Publishing (OIDC) with automatic provenance; no token anywhere        |
-| Builds differ between Windows and Linux                                 | LF everywhere, CI on both Ubuntu and Windows                                  |
-| No idea which directories to submit to; badges point at the wrong repo  | Directory list, submission procedure and badge rules as playbooks             |
-| A failed release leaves you guessing: re-run, delete the tag, or bump?   | A recovery step for every failure point                                       |
-
 ## From one sentence to listed
 
 ```mermaid
