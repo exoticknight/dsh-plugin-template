@@ -1,0 +1,104 @@
+# Push a vX.Y.Z tag to release. Order: gate -> CI -> npm (OIDC) -> GitHub Release.
+# Set the repository variable NPM_PUBLISH=false for a GitHub-only plugin.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+      dist_tag: ${{ steps.check.outputs.dist_tag }}
+      prerelease: ${{ steps.check.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - id: check
+        run: node scripts/check-release.mjs
+
+  ci:
+    needs: gate
+    uses: ./.github/workflows/ci.yml
+
+  npm:
+    needs: [gate, ci]
+    if: vars.NPM_PUBLISH != 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm >= 11.5.1.
+      - run: npm install --global npm@^11.5.1
+      # No dependency install or lifecycle scripts in the OIDC job: lib/ is
+      # committed and CI has verified it is current.
+      - name: Publish
+        env:
+          VERSION: ${{ needs.gate.outputs.version }}
+          DIST_TAG: ${{ needs.gate.outputs.dist_tag }}
+        run: |
+          name="$(node -p "require('./package.json').name")"
+          if npm view "$name@$VERSION" version >/dev/null 2>&1; then
+            echo "$name@$VERSION is already on npm; skipping."
+            exit 0
+          fi
+          npm publish --provenance --access public --ignore-scripts --tag "$DIST_TAG"
+
+  github-release:
+    needs: [gate, ci, npm]
+    if: ${{ !cancelled() && needs.ci.result == 'success' && needs.npm.result != 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - name: Pack
+        run: |
+          mkdir artifacts
+          npm pack --ignore-scripts --pack-destination artifacts
+          cd artifacts && sha256sum *.tgz > SHA256SUMS
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          PRERELEASE: ${{ needs.gate.outputs.prerelease }}
+        run: |
+          notes="docs/release-notes/$TAG.md"
+          args=(--verify-tag --title "$TAG")
+          if [[ -f "$notes" ]]; then args+=(--notes-file "$notes"); else args+=(--generate-notes); fi
+          if [[ "$PRERELEASE" == "true" ]]; then args+=(--prerelease); fi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" artifacts/*.tgz artifacts/SHA256SUMS --clobber
+          else
+            gh release create "$TAG" artifacts/*.tgz artifacts/SHA256SUMS "${args[@]}"
+          fi

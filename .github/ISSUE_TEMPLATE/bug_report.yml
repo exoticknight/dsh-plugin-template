@@ -1,0 +1,47 @@
+name: Bug report
+description: 'Report a problem with {{PLUGIN_TITLE}}.'
+title: '[Bug]: '
+labels: [bug]
+body:
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: dsh-version
+    attributes:
+      label: DSH version
+      description: Output of `dsh --version`.
+      placeholder: '{{DSH_VERSION}}'
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open …
+        2. Click …
+        3. See …
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, browser, DSH profile, and other active DSH plugins.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots or logs
+      description: Remove private paths, prompts, keys, and account details first.

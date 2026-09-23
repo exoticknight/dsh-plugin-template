@@ -1,0 +1,22 @@
+node_modules/
+.pnpm-store/
+*.tgz
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+
+# Build leftovers. lib/index.js and lib/client.js stay committed: source-backed
+# installs (github:, dsh.pub) need the entry files in the git tree.
+lib/*.map
+.tmp/
+artifacts/
+
+# Isolated development DSH home (conversations, settings, credentials).
+.dsh-dev/
+
+# RED working records are local-only.
+.research/
+.evolve/
