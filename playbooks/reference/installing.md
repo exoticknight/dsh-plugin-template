@@ -44,3 +44,16 @@ Do not replace these scripts with `DSH_HOME=… dsh …`: `dsh` on PATH may be a
 - list only `@deepseek-ai/*` packages as peers (peers are not installed for users)
 
 `pnpm test` checks all three.
+
+## What each install downloads
+
+| Install                              | What pnpm downloads                                                                                   |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `<name>` / `<name>@X.Y.Z`            | The npm tarball the release workflow published                                                        |
+| `github:<owner>/<name>#vX.Y.Z`       | GitHub's own source archive of that tag (`codeload.github.com/.../tar.gz/<commit>`), repacked by pnpm using the `files` whitelist |
+
+So:
+
+- Do not upload `.tgz` or checksum files to GitHub Releases. Neither install uses them; the release workflow only writes release notes.
+- `github:` installs work only because `lib/` is committed. A plugin that builds on install instead has to ship a tarball, which is what this template avoids.
+- GitHub's archive honours `export-ignore` in `.gitattributes`. Never mark a file that `files` needs (`lib/`, `cordis.patch.yml`, `package.json`, `README*`, `LICENSE`) as `export-ignore`, or `github:` installs lose it. `pnpm test` checks this.

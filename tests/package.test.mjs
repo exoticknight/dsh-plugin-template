@@ -1,5 +1,6 @@
 // Package-level contract tests. Run after `pnpm build`.
 import assert from 'node:assert/strict'
+import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import test from 'node:test'
 import { Context } from '@deepseek-ai/cordis'
@@ -31,6 +32,20 @@ test('package installs cleanly into a DSH profile', () => {
     )
   for (const peer of Object.keys(pkg.peerDependencies ?? {}))
     assert.match(peer, /^@deepseek-ai\//, `peer ${peer} is not provided by DSH`)
+})
+
+// `github:` installs download GitHub's source archive, which drops
+// export-ignore paths. Everything the package ships must survive it.
+test('packaged files are not export-ignored', (t) => {
+  const shipped = ['package.json', ...pkg.files]
+  const result = spawnSync('git', ['check-attr', 'export-ignore', '--', ...shipped], {
+    encoding: 'utf8',
+  })
+  if (result.status !== 0) return t.skip('not a git checkout')
+  const ignored = result.stdout
+    .split('\n')
+    .filter((line) => line.endsWith(': export-ignore: set'))
+  assert.deepEqual(ignored, [], 'remove these from export-ignore in .gitattributes')
 })
 
 test('cordis patch inserts this package', () => {
