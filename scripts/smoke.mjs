@@ -3,7 +3,7 @@
 //
 //   node scripts/smoke.mjs <name>@X.Y.Z [profile]                  npm
 //   node scripts/smoke.mjs github:<owner>/<name>#vX.Y.Z [profile]  GitHub release
-//   node scripts/smoke.mjs /absolute/path/<name>-X.Y.Z.tgz [profile] release tarball
+//   node scripts/smoke.mjs /absolute/path/<name>-X.Y.Z.tgz [profile] local `npm pack` output
 //
 // Always name an exact version: pnpm prefers releases older than 24 hours.
 import {

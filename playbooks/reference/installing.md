@@ -9,7 +9,6 @@ What the README gives users. Replace `web` with the profile the plugin targets.
 | npm                   | `dsh plugin --profile web add <name>`                        |
 | npm, exact version    | `dsh plugin --profile web add <name>@X.Y.Z`                  |
 | GitHub release        | `dsh plugin --profile web add github:<owner>/<name>#vX.Y.Z`  |
-| Release tarball       | `dsh plugin --profile web add /absolute/path/<name>-X.Y.Z.tgz` |
 | Remove                | `dsh plugin --profile web remove <name>`                     |
 
 Users restart DSH afterwards. For updates and rollbacks, always give an exact version: pnpm prefers releases older than 24 hours.

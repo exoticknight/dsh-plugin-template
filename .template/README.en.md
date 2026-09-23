@@ -44,7 +44,6 @@ Pinned to a release tag:
 dsh plugin --profile {{DSH_PROFILE}} add github:{{OWNER}}/dsh-plugin-template#v0.1.0
 ```
 
-Or download the `.tgz` from [Releases](https://github.com/{{OWNER}}/dsh-plugin-template/releases) and install it offline with `dsh plugin --profile {{DSH_PROFILE}} add <absolute path to the .tgz>`.
 
 Restart DSH (or the desktop app) and reload the page. The command installs into the DSH you normally use; if you set your own `DSH_HOME`, run it in that same environment.
 

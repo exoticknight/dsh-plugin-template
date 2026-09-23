@@ -6,7 +6,7 @@ Pushing a `vX.Y.Z` tag runs `.github/workflows/release.yml`:
 gate (tag == v<package.json version>, metadata, no placeholders)
   → ci (full matrix: ubuntu/windows × Node 22.19/24)
   → npm (OIDC Trusted Publishing; skipped if the version is already on npm or NPM_PUBLISH=false)
-  → github-release (tarball + SHA256SUMS; notes from docs/release-notes/vX.Y.Z.md or auto-generated)
+  → github-release (notes from docs/release-notes/vX.Y.Z.md or auto-generated; GitHub adds the source archives)
 ```
 
 For an npm plugin's very first release, do 20-npm §3 instead; it covers `v0.1.0`. For a GitHub-only plugin's first release, the version is already `0.1.0`, so start at step 3.
@@ -57,7 +57,7 @@ gh run watch "$(gh run list --workflow release.yml -L 1 --json databaseId --jq '
 ## 6. Verify
 
 ```sh
-gh release view vX.Y.Z --json tagName,isPrerelease,assets --jq '{tagName,isPrerelease,assets:[.assets[].name]}'
+gh release view vX.Y.Z --json tagName,isPrerelease,url
 npm view <name>@X.Y.Z version dist.attestations.provenance --json    # npm plugins
 ```
 
@@ -84,7 +84,7 @@ Find the failed job first: `gh run view <run-id> --log-failed`.
 ## Done when
 
 - [ ] The release workflow is green
-- [ ] The GitHub Release has the `.tgz` and `SHA256SUMS`
+- [ ] The GitHub Release `vX.Y.Z` exists with release notes
 - [ ] npm shows the version with provenance (npm plugins)
 - [ ] The smoke install works
 - [ ] After the first release, continue with [50-listings.md](50-listings.md). After later releases, only when the description or install command changed

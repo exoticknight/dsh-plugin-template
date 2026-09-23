@@ -24,7 +24,7 @@ Everything a DSH plugin built from this template should have, inside and outside
 | Dev isolation                | `pnpm dev*` and `pnpm smoke` run the DSH CLI via `scripts/dsh.mjs` (isolated homes, verified, no PATH shim) | `pnpm dev:install` |
 | Tests                        | `node --test` against built `lib/`; host mounts/unmounts in Cordis; client registers with the module loader                                                                             | `pnpm test`                                 |
 | CI workflow                  | push `main`, PRs, `workflow_call`; ubuntu+windows × Node 22.19/24; `pnpm verify`; stale-`lib` check; read-only permissions; actions pinned by SHA                                       | `.github/workflows/ci.yml`                  |
-| Release workflow             | tag `v*` → gate → CI → npm OIDC (idempotent) → GitHub Release with tgz + SHA256SUMS; prerelease → `next`                                                                                | `.github/workflows/release.yml`             |
+| Release workflow             | tag `v*` → gate → CI → npm OIDC (idempotent) → GitHub Release (notes only, no uploaded assets); prerelease → `next`                                                                                | `.github/workflows/release.yml`             |
 | Dependabot                   | Actions + npm dev dependencies weekly; `@deepseek-ai/*` ignored                                                                                                                         | `.github/dependabot.yml`                    |
 | Issue templates              | Bug report asks for plugin and DSH version                                                                                                                                              | `.github/ISSUE_TEMPLATE/`                   |
 | Docs                         | `README.md` (Chinese) + `README.en.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`, `docs/development.md`, `docs/compatibility.md`                                                       |                                             |
@@ -49,7 +49,7 @@ Everything a DSH plugin built from this template should have, inside and outside
 | Tag ruleset                 | `release tags`: no deleting or moving `v*` tags, admin bypass               | `gh api repos/$O/$N/rulesets`                                                   |
 | Secrets                     | None; npm uses OIDC                                                         | `gh secret list -R $O/$N`                                                       |
 | Security                    | Dependabot alerts and security fixes on; private vulnerability reporting on | `gh api repos/$O/$N/private-vulnerability-reporting`                            |
-| Releases                    | One per tag, tgz + SHA256SUMS, latest marked                                | `gh release list -R $O/$N -L 3`                                                 |
+| Releases                    | One per tag with notes, no uploaded assets, latest marked                                | `gh release list -R $O/$N -L 3`                                                 |
 
 ## npm (not in the repository)
 

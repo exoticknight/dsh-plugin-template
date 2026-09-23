@@ -59,7 +59,7 @@ Each step has a [playbook](playbooks/) with its goal, preconditions, commands to
 **🚀 Release with one tag**
 
 - CI on Ubuntu / Windows × Node 22.19 / 24
-- npm Trusted Publishing; GitHub Releases with tarball and SHA-256
+- npm Trusted Publishing, plus a GitHub Release with release notes
 - Prereleases go to npm `next`; every step is safe to re-run
 - GitHub-only distribution with `--no-npm`
 

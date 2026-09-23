@@ -59,7 +59,7 @@ flowchart LR
 **🚀 一个 tag 完成发布**
 
 - CI 覆盖 Ubuntu / Windows × Node 22.19 / 24
-- npm Trusted Publishing，GitHub Release 附 tarball 和 SHA-256
+- npm Trusted Publishing，并自动创建 GitHub Release 与发布说明
 - 预发布版本自动走 npm `next` 通道；每一步都能安全重跑
 - 也可以只发布到 GitHub（`--no-npm`）
 

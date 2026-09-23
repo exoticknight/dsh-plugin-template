@@ -44,7 +44,6 @@ dsh plugin --profile {{DSH_PROFILE}} add dsh-plugin-template
 dsh plugin --profile {{DSH_PROFILE}} add github:{{OWNER}}/dsh-plugin-template#v0.1.0
 ```
 
-也可以从 [Releases](https://github.com/{{OWNER}}/dsh-plugin-template/releases) 下载 `.tgz`，用 `dsh plugin --profile {{DSH_PROFILE}} add <tgz 文件的绝对路径>` 离线安装。
 
 安装后重启 DSH（桌面版请重启应用），刷新页面。命令会装到你平时使用的 DSH；如果你设置了自己的 `DSH_HOME`，请在同一个环境中运行。
 
