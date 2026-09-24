@@ -16,6 +16,8 @@ artifacts/
 
 # Isolated development DSH home (conversations, settings, credentials).
 .dsh-dev/
+# DSH CLI installed only for testing (pnpm dev:cli).
+.dsh-cli/
 
 # RED working records are local-only.
 .research/

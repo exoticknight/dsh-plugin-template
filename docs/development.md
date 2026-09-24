@@ -6,7 +6,7 @@ AI agents: start at [AGENTS.md](../AGENTS.md), which routes each task to a playb
 
 - Node.js `^22.19.0 || >=24.0.0`
 - pnpm, at the version pinned by `packageManager` (`corepack enable` picks it up)
-- A DSH CLI for local testing: a project-local `@deepseek-ai/dsh` dev dependency, or `DSH_BIN` pointing to an installed `.../@deepseek-ai/dsh/lib/bin.js`. `dsh` on PATH is deliberately not used (see Isolated DSH).
+- A DSH CLI for local testing: `pnpm dev:cli [version]` installs one into `.dsh-cli/`, used only for this repository (see Isolated DSH).
 
 ## Setup
 
@@ -42,6 +42,7 @@ pnpm verify
 | `pnpm check:package` | List the npm tarball contents and check them                |
 | `pnpm check:release` | Release gate: tag, version, metadata, leftover placeholders |
 | `pnpm verify`        | Everything CI runs                                          |
+| `pnpm dev:cli [ver]` | Install DSH (default: latest) into `.dsh-cli` for testing   |
 | `pnpm dev`           | Link this checkout into `.dsh-dev` and start the web profile |
 | `pnpm dev:install`   | Link into `.dsh-dev` without starting DSH                   |
 | `pnpm dev:dsh …`     | Run any dsh command against `.dsh-dev`                      |
@@ -57,7 +58,7 @@ All local testing happens in `.dsh-dev/`, a DSH home inside the repository. Your
 - `DSH_PROFILE` overrides the profile (default `web`, or `headless` without a client entry). For headless, use `pnpm dev:dsh --profile headless "<task>"`.
 - `.dsh-dev/` holds conversations, settings and credentials. Git ignores it; never commit it. `pnpm dev:clean` deletes it.
 
-The scripts deliberately avoid `dsh` from PATH, because launcher shims can redirect installs to your daily home; see `playbooks/reference/installing.md` → Development installs.
+The DSH CLI comes from `DSH_BIN`, then `.dsh-cli/`. If neither exists but your own DSH is installed, the scripts show where it is and ask before using it; they run its `bin.js` with node against `.dsh-dev`, never the `dsh` command itself, because launcher shims can redirect installs to your daily home. `.dsh-cli/` is ignored by git and kept by `pnpm dev:clean`. Details: `playbooks/reference/installing.md` → Development installs.
 
 To try the plugin in your everyday DSH, install it there yourself with the user commands from the README.
 

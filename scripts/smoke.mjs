@@ -3,18 +3,22 @@
 //
 //   node scripts/smoke.mjs <name>@X.Y.Z [profile]                  npm
 //   node scripts/smoke.mjs github:<owner>/<name>#vX.Y.Z [profile]  GitHub release
-//   node scripts/smoke.mjs /absolute/path/<name>-X.Y.Z.tgz [profile] local `npm pack` output
+//   node scripts/smoke.mjs <path>/<name>-X.Y.Z.tgz [profile]          local `npm pack` output
 //
 // Always name an exact version: pnpm prefers releases older than 24 hours.
+import path from 'node:path'
 import {
   assertInstalled,
   assertMounted,
   createTempHome,
   defaultProfile,
+  prepareDsh,
   runDsh,
 } from './dsh.mjs'
 
-const [spec, profile = defaultProfile] = process.argv.slice(2)
+const [arg, profile = defaultProfile] = process.argv.slice(2)
+// pnpm resolves a tarball path from the profile directory, not from here.
+const spec = arg?.endsWith('.tgz') ? path.resolve(arg) : arg
 if (!spec || !/[@#]|\.tgz$/.test(spec.replace(/^@/, ''))) {
   console.error(
     'Usage: node scripts/smoke.mjs <name>@X.Y.Z | github:<owner>/<name>#vX.Y.Z | <path>.tgz [profile]',
@@ -22,6 +26,7 @@ if (!spec || !/[@#]|\.tgz$/.test(spec.replace(/^@/, ''))) {
   process.exit(1)
 }
 
+await prepareDsh()
 const { home, cleanup } = createTempHome()
 try {
   const status = runDsh(home, ['plugin', '--profile', profile, 'add', spec])

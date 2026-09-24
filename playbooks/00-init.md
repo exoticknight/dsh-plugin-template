@@ -67,10 +67,10 @@ Add `--dry-run` first if you want to see which files change. Init replaces every
 Verify that nothing is left over:
 
 ```sh
-git grep -nE "\{\{[A-Z_]+\}\}|dsh-plugin-template" -- . ":!playbooks" ":!scripts/check-release.mjs"
+git grep -nE "\{\{[A-Z_]+\}\}|dsh-plugin-template" -- . ":!playbooks" ":!scripts/check-release.mjs" ":!lib"
 ```
 
-The only expected hits are the `template` credit lines in `package.json`; keep them.
+The only expected hits are the `template` credit lines in `package.json`; keep them. `lib/` still has the template name until step 4 rebuilds it.
 
 ## 4. Install and verify
 
@@ -102,7 +102,7 @@ Run `pnpm verify` again.
 pnpm dev
 ```
 
-It needs a DSH CLI for isolated runs; if `pnpm dev` says none was found, follow its message ([installing.md § Development installs](reference/installing.md#development-installs)). Give the printed link to the user. It contains a login token, so do not paste it anywhere public. Manual checks that pass go into `docs/compatibility.md` → Manual verification.
+It needs a DSH CLI for isolated runs: run `pnpm dev:cli` first (installs the latest DSH into `.dsh-cli/`; pass a version to choose another). If `pnpm dev` stops because only the user's own DSH was found, ask the user before using it ([installing.md § Development installs](reference/installing.md#development-installs)). Give the printed link to the user. It contains a login token, so do not paste it anywhere public. Manual checks that pass go into `docs/compatibility.md` → Manual verification.
 
 ## 7. First commit
 

@@ -66,6 +66,7 @@
     "verify": "pnpm typecheck && pnpm build && pnpm test && pnpm check:package",
     "hooks:install": "simple-git-hooks",
     "dev": "node scripts/dev.mjs start",
+    "dev:cli": "node scripts/dev.mjs cli",
     "dev:install": "node scripts/dev.mjs install",
     "dev:dsh": "node scripts/dev.mjs run",
     "dev:clean": "node scripts/dev.mjs clean",

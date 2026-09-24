@@ -31,7 +31,8 @@ This file is loaded for every task. It holds only what always applies. Everythin
 - **Ask first:** anything needing the user's credentials or hard to undo (`npm login`/OTP, manual `npm publish`, npmjs.com settings, deleting or moving a pushed tag or a release, `npm deprecate`/`unpublish`), and any public action in the user's name (directory submissions, issues or PRs on other repositories, deleting forks).
 - **Never** grant third-party OAuth access to the user's accounts.
 - **Never touch the user's own DSH home.** Test installs only with `pnpm dev*` (isolated `.dsh-dev/`) and `pnpm smoke` (throwaway home). Never run `dsh` from PATH with a custom `DSH_HOME`, and never delete a directory whose path comes from an environment variable. See [installing.md](playbooks/reference/installing.md#development-installs).
-- **Never commit** `.dsh-dev/`, `.env*`, keys, `.research/` or `.evolve/`.
+- **Ask before using the user's own DSH CLI.** The recommended CLI for test installs is an isolated one in `.dsh-cli/` (`pnpm dev:cli [version]`). When only the machine's own DSH is available, the scripts stop and print its path: tell the user, and set `DSH_BIN` to it only if they agree.
+- **Never commit** `.dsh-dev/`, `.dsh-cli/`, `.env*`, keys, `.research/` or `.evolve/`.
 - **Never change the release trust model** (OIDC, `environment: npm`, no `NPM_TOKEN`) without the user's decision.
 
 ## Commands
@@ -39,6 +40,7 @@ This file is loaded for every task. It holds only what always applies. Everythin
 ```sh
 pnpm install && pnpm hooks:install
 pnpm verify          # what CI runs: typecheck, build, tests, package check
+pnpm dev:cli [ver]   # isolated DSH CLI in .dsh-cli (default: latest)
 pnpm dev             # this checkout linked into the isolated DSH home .dsh-dev
 pnpm smoke <spec>    # a published version installed into a throwaway DSH home
 pnpm check:release   # release gate

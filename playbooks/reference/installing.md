@@ -22,16 +22,25 @@ pnpm smoke github:<owner>/<name>#vX.Y.Z
 
 ## Development installs
 
-Only into the repository's own `.dsh-dev/`:
+Only into the repository's own `.dsh-dev/`, preferably with a DSH CLI installed only for this repository:
 
 ```sh
+pnpm dev:cli [ver]   # install DSH <ver> (default: latest) into .dsh-cli
 pnpm dev             # link this checkout into .dsh-dev and start DSH
 pnpm dev:install     # link only
 pnpm dev:dsh <args>  # any dsh command against .dsh-dev
 pnpm dev:clean       # delete .dsh-dev
 ```
 
-After a change: `pnpm build`, then restart DSH. The scripts need `DSH_BIN` (path to an installed `@deepseek-ai/dsh/lib/bin.js`) or a local `pnpm add -D @deepseek-ai/dsh@<version>`.
+After a change: `pnpm build`, then restart DSH.
+
+The scripts pick the DSH CLI in this order:
+
+1. `DSH_BIN`: path to an installed `.../@deepseek-ai/dsh/lib/bin.js`.
+2. `.dsh-cli/`, installed by `pnpm dev:cli`. This is the recommended one: it is separate from the user's own DSH and its version is chosen for the plugin. It is installed with npm and `--ignore-scripts`, outside the pnpm workspace, so it never enters `package.json` or the lockfile.
+3. The machine's own DSH, found through `dsh` on PATH. The scripts never run that command; they read the `bin.js` behind it and ask before using it. Without a terminal (agents, CI) they stop instead: tell the user, and set `DSH_BIN` to the printed path only if they agree.
+
+`@deepseek-ai/dsh` is deliberately not a dev dependency: its dependencies have build scripts, which make every later `pnpm install` fail under pnpm 11, and CI would download all of DSH on every run.
 
 Do not replace these scripts with `DSH_HOME=… dsh …`: `dsh` on PATH may be a launcher that ignores `DSH_HOME` and writes to the user's real home.
 

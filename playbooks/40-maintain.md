@@ -10,7 +10,7 @@ Dependabot opens weekly grouped PRs for GitHub Actions (pinned by SHA) and npm d
 
 1. Read the DSH release notes for changes to the services, slots, routes and DOM anchors listed in `docs/compatibility.md` → Integration contracts.
 2. Update `@deepseek-ai/*` dev and peer dependencies if needed, then `pnpm install` and `pnpm verify`.
-3. Run the plugin on the new version (`pnpm dev`; pin it with `pnpm add -D @deepseek-ai/dsh@<version>` if needed) and repeat the checks in `docs/compatibility.md` → Manual verification.
+3. Run the plugin on the new version (`pnpm dev:cli <version>`, then `pnpm dev`) and repeat the checks in `docs/compatibility.md` → Manual verification.
 4. Update the verified version in `docs/compatibility.md`, the README DSH badge (both languages) and the placeholder in `.github/ISSUE_TEMPLATE/bug_report.yml`. Raise the minimum only when the plugin really needs the new version.
 5. Release (30-release), even if no code changed, so users can see the plugin is verified on the new version.
 
