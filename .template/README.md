@@ -63,6 +63,8 @@ TODO：说明配置保存在哪里；如有 API Key，说明它保存在 DSH 凭
 
 ## 更新、回滚与卸载
 
+版本变更与升级说明见 [更新日志](https://github.com/{{OWNER}}/dsh-plugin-template/releases)。
+
 更新或回滚时请写明版本号，然后重启 DSH（新版本发布后 24 小时内，不带版本号的安装命令可能仍会装到旧版本）：
 
 <!-- npm:start -->

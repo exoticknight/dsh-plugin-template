@@ -59,7 +59,7 @@ flowchart LR
 **🚀 一个 tag 完成发布**
 
 - CI 覆盖 Ubuntu / Windows × Node 22.19 / 24
-- npm Trusted Publishing，并自动创建 GitHub Release 与发布说明
+- npm Trusted Publishing，并自动创建 GitHub Release：按 PR 标签分类变更、标注贡献者，可附加版本重点与升级说明
 - 预发布版本自动走 npm `next` 通道；每一步都能安全重跑
 - 也可以只发布到 GitHub（`--no-npm`）
 
@@ -82,7 +82,7 @@ flowchart LR
 
 **📦 完整的仓库规范**
 
-- Dependabot、Bug 报告模板、中英双语 README、CONTRIBUTING、SECURITY、CHANGELOG
+- Dependabot、Bug 报告模板、中英双语 README、CONTRIBUTING、SECURITY；版本历史统一保存在 GitHub Releases，插件 README 提供链接
 - 使用 [RED](https://github.com/exoticknight/red) 管理研究、变更与文档
 
 ## 需要你本人完成的事

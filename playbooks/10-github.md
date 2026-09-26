@@ -31,6 +31,16 @@ Use the `package.json` keywords as topics, plus `dsh-bundle`. Most plugin direct
 
 ## 3. Actions permissions
 
+Create the labels used by the release-note categories (also for GitHub-only plugins):
+
+```sh
+gh label create breaking-change --repo $O/$N --color D73A4A --description "Requires migration or changes existing behavior"
+gh label create enhancement --repo $O/$N --color A2EEEF --description "New feature or improvement"
+gh label create bug --repo $O/$N --color D73A4A --description "Bug fix"
+```
+
+If a label already exists, keep it. Apply these labels to PRs as described in [30-release](30-release.md#release-notes-during-development).
+
 The workflows declare their own permissions. Keep the default token read-only:
 
 ```sh

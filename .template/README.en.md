@@ -63,6 +63,8 @@ TODO: where settings are stored; for API keys, that they go to the DSH credentia
 
 ## Update, roll back, remove
 
+See the [release notes](https://github.com/{{OWNER}}/dsh-plugin-template/releases) for version changes and upgrade instructions.
+
 To update or roll back, name the version, then restart DSH (for 24 hours after a release, an install without a version may still pick the previous one):
 
 <!-- npm:start -->

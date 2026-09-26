@@ -92,7 +92,7 @@ jobs:
             exit 0
           fi
           notes="docs/release-notes/$TAG.md"
-          args=(--verify-tag --title "$TAG")
-          if [[ -f "$notes" ]]; then args+=(--notes-file "$notes"); else args+=(--generate-notes); fi
+          args=(--verify-tag --title "$TAG" --generate-notes)
+          if [[ -f "$notes" ]]; then args+=(--notes-file "$notes"); fi
           if [[ "$PRERELEASE" == "true" ]]; then args+=(--prerelease); fi
           gh release create "$TAG" "${args[@]}"

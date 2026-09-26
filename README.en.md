@@ -59,7 +59,7 @@ Each step has a [playbook](playbooks/) with its goal, preconditions, commands to
 **🚀 Release with one tag**
 
 - CI on Ubuntu / Windows × Node 22.19 / 24
-- npm Trusted Publishing, plus a GitHub Release with release notes
+- npm Trusted Publishing, plus GitHub Release notes grouped by PR labels with contributor attribution and optional highlights or upgrade instructions
 - Prereleases go to npm `next`; every step is safe to re-run
 - GitHub-only distribution with `--no-npm`
 
@@ -82,7 +82,7 @@ Each step has a [playbook](playbooks/) with its goal, preconditions, commands to
 
 **📦 Repository conventions**
 
-- Dependabot, bug report template, bilingual README, CONTRIBUTING, SECURITY, CHANGELOG
+- Dependabot, bug report template, bilingual README, CONTRIBUTING, SECURITY; version history lives in GitHub Releases, linked from the plugin README
 - Research, changes and documentation managed with [RED](https://github.com/exoticknight/red)
 
 ## What only you do

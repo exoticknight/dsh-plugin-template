@@ -1,0 +1,11 @@
+# Categories for GitHub's generated release notes; first matching category wins.
+changelog:
+  categories:
+    - title: Breaking Changes
+      labels: [breaking-change]
+    - title: Features
+      labels: [enhancement]
+    - title: Fixes
+      labels: [bug]
+    - title: Other Changes
+      labels: ['*']
