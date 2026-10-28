@@ -61,7 +61,7 @@ node scripts/init.mjs --name <name> --owner <owner> \
   --title "<title>" --description "<sentence>" [--keywords a,b] [--host-only] [--no-npm]
 ```
 
-Init sets `config.dshVersion` to `stable` and declares `*` in both `engines.dsh` and the optional `@deepseek-ai/dsh` peer, so DSH admission has no version boundary. `pnpm dev:cli` resolves the highest published stable SemVer version from npm, ignoring prereleases and dist-tags; it reports an error if npm has no stable DSH release yet. It always uses that stable release. `pnpm-workspace.yaml` disables automatic peer installation; the optional host peer allows development without a workspace CLI.
+Init sets `config.dshVersion` to `stable` and declares `*` in both `engines.dsh` and the optional `@deepseek-ai/dsh` peer, so DSH admission has no version boundary. `pnpm dev:cli` resolves the highest published stable SemVer version from npm; if none exists, it falls back to the highest published prerelease SemVer version. It uses the version list rather than dist-tags, so a stale `latest` tag cannot select an older build. `pnpm-workspace.yaml` disables automatic peer installation; the optional host peer allows development without a workspace CLI.
 
 Add `--dry-run` first if you want to see which files change. Init replaces every placeholder, removes the template-only blocks (and the npm or client blocks when those flags are set), adjusts `package.json`, and deletes itself. It also replaces the template's own `README.md` / `README.en.md` with the plugin README skeletons from `.template/` and removes that directory. The `playbooks/` stay because they are needed for releases.
 
@@ -103,7 +103,7 @@ Run `pnpm verify` again.
 pnpm dev
 ```
 
-It needs a DSH CLI for isolated runs: run `pnpm dev:cli` first (installs the latest stable release into `.dsh-cli/`). If no stable DSH release is published yet, the command explains that and stops. If `pnpm dev` stops because only the user's own DSH was found, ask the user before using it ([installing.md § Development installs](reference/installing.md#development-installs)). Give the printed link to the user. It contains a login token, so do not paste it anywhere public. Manual checks that pass go into `docs/compatibility.md` → Manual verification.
+It needs a DSH CLI for isolated runs: run `pnpm dev:cli` first (installs the latest stable release or, if none exists, the highest published prerelease into `.dsh-cli/`). If npm has no published DSH versions or cannot be queried, the command explains the failure and stops. If `pnpm dev` stops because only the user's own DSH was found, ask the user before using it ([installing.md § Development installs](reference/installing.md#development-installs)). Give the printed link to the user. It contains a login token, so do not paste it anywhere public. Manual checks that pass go into `docs/compatibility.md` → Manual verification.
 
 ## 7. First commit
 

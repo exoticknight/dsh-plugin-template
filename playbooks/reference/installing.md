@@ -25,7 +25,7 @@ pnpm smoke github:<owner>/<name>#vX.Y.Z
 Only into the repository's own `.dsh-dev/`, preferably with a DSH CLI installed only for this repository:
 
 ```sh
-pnpm dev:cli         # install latest stable DSH into .dsh-cli
+pnpm dev:cli         # install latest stable DSH, or latest prerelease if none exists
 pnpm dev             # link this checkout into .dsh-dev and start DSH
 pnpm dev:install     # link only
 pnpm dev:dsh <args>  # any dsh command against .dsh-dev
@@ -42,7 +42,7 @@ The scripts pick the DSH CLI in this order:
 
 `@deepseek-ai/dsh` is deliberately not a dev dependency: its dependencies have build scripts, which make every later `pnpm install` fail under pnpm 11, and CI would download all of DSH on every run.
 
-It is an optional host peer. Keep `autoInstallPeers: false` in `pnpm-workspace.yaml`: pnpm 11 can install even an optional peer automatically. The template sets both `engines.dsh` and this peer to `*`, leaving the runtime host with no DSH version gate. `pnpm dev:cli` resolves the newest stable SemVer release from npm, not the `latest` dist-tag; when there is no stable release yet, it stops with an explanatory error.
+It is an optional host peer. Keep `autoInstallPeers: false` in `pnpm-workspace.yaml`: pnpm 11 can install even an optional peer automatically. The template sets both `engines.dsh` and this peer to `*`, leaving the runtime host with no DSH version gate. `pnpm dev:cli` resolves the newest stable SemVer release from npm, not the `latest` dist-tag; if no stable release exists, it installs the highest published prerelease instead. It errors only when npm cannot be queried or no valid version is published.
 
 `pnpm smoke` confirms installation and merged configuration, not runtime activation. Start `pnpm dev` and check host and browser client behavior before marking a version verified.
 

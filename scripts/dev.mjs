@@ -1,7 +1,7 @@
 // Development install: this checkout, linked into the isolated DSH home
 // `.dsh-dev/` inside the repository. Your daily DSH home is never touched.
 //
-//   node scripts/dev.mjs cli            install the latest stable DSH into .dsh-cli
+//   node scripts/dev.mjs cli            install latest stable DSH, or latest prerelease if needed
 //   node scripts/dev.mjs install        link this checkout into .dsh-dev
 //   node scripts/dev.mjs start          install, then start the web profile on a free port
 //   node scripts/dev.mjs run <args...>  run any dsh command against .dsh-dev
@@ -14,7 +14,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import {
   DEFAULT_DSH_SELECTOR,
-  latestStableDshVersion,
+  latestDshVersion,
 } from './dsh-version.mjs'
 import {
   assertInstalled,
@@ -47,21 +47,26 @@ if (command === 'clean') {
 if (command === 'cli') {
   if (rest.length) {
     console.error(
-      'dev: pnpm dev:cli always installs the latest stable DSH release; pass no version.',
+      'dev: pnpm dev:cli selects latest stable DSH, or the latest prerelease when no stable exists; pass no version.',
     )
     process.exit(1)
   }
   const requested = pkg.config?.dshVersion ?? DEFAULT_DSH_SELECTOR
   if (requested !== 'stable')
     throw new Error(`Expected config.dshVersion to be "stable", found "${requested}".`)
-  let version
+  let selection
   try {
-    version = latestStableDshVersion()
+    selection = latestDshVersion()
   } catch (error) {
     console.error(`dev: ${error.message}`)
     process.exit(1)
   }
-  console.log(`Installing latest stable DSH ${version} into ${cliDir}.`)
+  const { version, channel } = selection
+  console.log(
+    channel === 'stable'
+      ? `Installing latest stable DSH ${version} into ${cliDir}.`
+      : `No stable DSH release is published; installing newest prerelease ${version} into ${cliDir}.`,
+  )
   // npm, not pnpm: .dsh-cli is a standalone tool directory outside this
   // workspace. No install scripts run; DSH works without them.
   const install = spawnSync(

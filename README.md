@@ -96,7 +96,7 @@ flowchart LR
 
 **手动复制，再交给 agent。** 点击上方的 **Use this template**（或 clone 仓库），用 agent 打开后说「初始化这个插件」。
 
-初始化不会设置 DSH 版本门槛：模板的 `engines.dsh` 和可选 DSH host peer 都是 `*`。DSH 使用 `engines.dsh` 判断版本兼容；只有未声明该字段时才回退检查 host peer。本地 `pnpm dev:cli` 则动态安装 npm 上最新的稳定版；如果尚无稳定版，会明确报错，不回退到预发布版。插件实际可用性仍取决于它使用的 DSH API，请记录并查看兼容性验证结果。
+初始化不会设置 DSH 版本门槛：模板的 `engines.dsh` 和可选 DSH host peer 都是 `*`。DSH 使用 `engines.dsh` 判断版本兼容；只有未声明该字段时才回退检查 host peer。本地 `pnpm dev:cli` 优先安装 npm 上最新的稳定版；如果尚无稳定版，就安装最高 SemVer 的预发布版，不依赖可能滞后的 `latest` 标签。插件实际可用性仍取决于它使用的 DSH API，请记录并查看兼容性验证结果。
 
 **完全手动。** 环境要求：Node.js `^22.19.0 || >=24`、pnpm、git、已登录的 GitHub CLI；本地测试需要 DSH CLI。
 

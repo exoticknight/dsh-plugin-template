@@ -1,17 +1,21 @@
 import semver from 'semver'
 import { spawnSync } from 'node:child_process'
 
-// Development tracks the newest non-prerelease npm version. This is a policy
-// alias, not an admission range; the package's DSH compatibility is unbounded.
+// Development prefers the newest stable npm version, then falls back to the
+// newest prerelease. This is a selection policy, not an admission range.
 export const DEFAULT_DSH_SELECTOR = 'stable'
 
-export function latestStableDshVersion({
+export function latestDshVersion({
   getVersions = readPublishedVersions,
 } = {}) {
-  const version = semver.maxSatisfying(getVersions(), '*')
-  if (!version)
-    throw new Error('No stable @deepseek-ai/dsh version is published on npm yet.')
-  return version
+  const versions = getVersions()
+  const stable = semver.maxSatisfying(versions, '*')
+  if (stable) return { version: stable, channel: 'stable' }
+
+  const prerelease = semver.maxSatisfying(versions, '*', { includePrerelease: true })
+  if (prerelease) return { version: prerelease, channel: 'prerelease' }
+
+  throw new Error('No @deepseek-ai/dsh version is published on npm.')
 }
 
 function readPublishedVersions() {
