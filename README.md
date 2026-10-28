@@ -96,13 +96,13 @@ flowchart LR
 
 **手动复制，再交给 agent。** 点击上方的 **Use this template**（或 clone 仓库），用 agent 打开后说「初始化这个插件」。
 
-初始化会询问目标 DSH 版本。无法取得答案时默认使用 0.2，目前固定为已发布的 `0.2.0-rc.2`。手动运行时也可以省略 `--dsh-version`：终端会询问，留空或非交互运行采用默认值。默认只声明兼容所选版本；`--dsh-min` 可将范围扩展到指定下限，开发目标与实际验证记录分别保存。
+初始化不会设置 DSH 版本门槛：模板的 `engines.dsh` 和可选 DSH host peer 都是 `*`。DSH 使用 `engines.dsh` 判断版本兼容；只有未声明该字段时才回退检查 host peer。本地 `pnpm dev:cli` 则动态安装 npm 上最新的稳定版；如果尚无稳定版，会明确报错，不回退到预发布版。插件实际可用性仍取决于它使用的 DSH API，请记录并查看兼容性验证结果。
 
 **完全手动。** 环境要求：Node.js `^22.19.0 || >=24`、pnpm、git、已登录的 GitHub CLI；本地测试需要 DSH CLI。
 
 ```sh
 pnpm install
-node scripts/init.mjs --name dsh-foo --owner <github-user> --dsh-version 0.2 \
+node scripts/init.mjs --name dsh-foo --owner <github-user> \
   --title "Foo" --description "Foo for DeepSeek Harness."
 pnpm install
 pnpm hooks:install
@@ -118,8 +118,6 @@ pnpm verify
 | ---------------- | ---- | ------------------------------------------------------ |
 | `--name`         | 是   | npm 包名与仓库名，格式 `dsh-<slug>`                    |
 | `--owner`        | 是   | GitHub 用户或组织                                      |
-| `--dsh-version`  |      | 目标版本；省略时询问，无法询问或留空默认 0.2（0.2.0-rc.2）                                      |
-| `--dsh-min`      |      | 最低支持的 DSH 版本（默认同 `--dsh-version`）          |
 | `--title`        |      | 显示名称（默认由包名生成）                             |
 | `--description`  |      | 一句英文简介（默认 "`<title>` for DeepSeek Harness."） |
 | `--author`       |      | `package.json` 作者（默认同 owner）                    |
@@ -134,7 +132,7 @@ pnpm verify
 <summary><b>初始化做了什么</b></summary>
 
 - 把 `.template/` 中的插件 README 骨架复制为 `README.md`（中文）和 `README.en.md`（英文），替换本页
-- 替换所有占位符：`dsh-plugin-template`、`{{OWNER}}`、`{{PLUGIN_TITLE}}`、`{{DESCRIPTION}}`、`{{AUTHOR}}`、`{{DSH_VERSION}}`、`{{DSH_VERSION_BADGE}}`、`{{DSH_MIN_VERSION}}`、`{{DSH_COMPAT_RANGE}}`、`{{DSH_PROFILE}}`
+- 替换模板占位符：`dsh-plugin-template`、`{{OWNER}}`、`{{PLUGIN_TITLE}}`、`{{DESCRIPTION}}`、`{{AUTHOR}}`、`{{DSH_PROFILE}}`
 - 删除仅属于模板的内容：`AGENTS.md` 中的模板说明段、`.template/`、初始化脚本本身；按参数删除 client 入口或 npm 相关内容
 - 保留 `playbooks/`（发布和维护还要用），并在 `package.json` 的 `template` 字段记录模板来源
 

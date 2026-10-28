@@ -1,45 +1,33 @@
 import semver from 'semver'
-import { createInterface } from 'node:readline/promises'
+import { spawnSync } from 'node:child_process'
 
-// The 0.2 release line currently starts at this published prerelease.
-// Keep the fallback reproducible; do not resolve a moving dist-tag during init.
-export const DEFAULT_DSH_VERSION = '0.2.0-rc.2'
+// Development tracks the newest non-prerelease npm version. This is a policy
+// alias, not an admission range; the package's DSH compatibility is unbounded.
+export const DEFAULT_DSH_SELECTOR = 'stable'
 
-export function exactDshVersion(input) {
-  const value = input.trim() === '0.2' ? DEFAULT_DSH_VERSION : input.trim()
-  if (!semver.valid(value) || value !== semver.valid(value))
-    throw new Error(`Invalid DSH version "${input}". Use 0.2 or an exact version, e.g. ${DEFAULT_DSH_VERSION}.`)
-  return value
-}
-
-export async function chooseDshVersion(value, {
-  interactive = Boolean(process.stdin.isTTY && process.stdout.isTTY),
-  ask = async () => {
-    const terminal = createInterface({ input: process.stdin, output: process.stdout })
-    try {
-      return await new Promise((resolve, reject) => {
-        terminal.once('close', () => resolve(''))
-        terminal.question(`Target DSH version [0.2 = ${DEFAULT_DSH_VERSION}]: `)
-          .then(resolve, reject)
-      })
-    } finally {
-      terminal.close()
-    }
-  },
+export function latestStableDshVersion({
+  getVersions = readPublishedVersions,
 } = {}) {
-  if (value !== undefined) return exactDshVersion(value)
-  if (interactive) {
-    let answer
-    try { answer = await ask() } catch { return DEFAULT_DSH_VERSION }
-    if (answer?.trim()) return exactDshVersion(answer)
-  }
-  return DEFAULT_DSH_VERSION
+  const version = semver.maxSatisfying(getVersions(), '*')
+  if (!version)
+    throw new Error('No stable @deepseek-ai/dsh version is published on npm yet.')
+  return version
 }
 
-export function dshCompatibility(target, minimum = target) {
-  target = exactDshVersion(target)
-  minimum = exactDshVersion(minimum)
-  if (semver.gt(minimum, target))
-    throw new Error(`Minimum DSH ${minimum} exceeds target ${target}.`)
-  return minimum === target ? target : `>=${minimum} <=${target}`
+function readPublishedVersions() {
+  const [command, args] = process.platform === 'win32'
+    ? ['cmd.exe', ['/d', '/s', '/c', 'npm view @deepseek-ai/dsh versions --json']]
+    : ['npm', ['view', '@deepseek-ai/dsh', 'versions', '--json']]
+  const result = spawnSync(command, args, { encoding: 'utf8' })
+  if (result.error)
+    throw new Error(`Could not query npm for DSH versions: ${result.error.message}`)
+  if (result.status !== 0)
+    throw new Error(
+      `Could not query npm for DSH versions: ${result.stderr.trim() || `npm exited ${result.status}`}`,
+    )
+  try {
+    const versions = JSON.parse(result.stdout)
+    if (Array.isArray(versions)) return versions
+  } catch {}
+  throw new Error('npm returned an invalid @deepseek-ai/dsh version list.')
 }

@@ -86,7 +86,7 @@ async function confirmLocal({ command, bin }) {
     'It is the installation you use every day. It would run with node against',
     'the isolated home only, and the install is verified afterwards, but its',
     'version is whatever that installation has, not one chosen for this plugin.',
-    'Recommended instead: pnpm dev:cli [version]  (installs DSH into .dsh-cli/)',
+    'Recommended instead: pnpm dev:cli  (installs the latest stable DSH into .dsh-cli/)',
   ].join('\n')
   if (!process.stdin.isTTY || !process.stdout.isTTY)
     throw new Error(
@@ -133,7 +133,7 @@ async function chooseDsh() {
   throw new Error(
     [
       'No DSH CLI found for isolated runs. Either:',
-      '  pnpm dev:cli [version]   install one into .dsh-cli/ (recommended)',
+      '  pnpm dev:cli             install latest stable into .dsh-cli/ (recommended)',
       '  or set DSH_BIN to an installed .../@deepseek-ai/dsh/lib/bin.js',
     ].join('\n'),
   )

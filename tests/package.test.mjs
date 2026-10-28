@@ -9,11 +9,15 @@ import semver from 'semver'
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'))
 const patch = fs.readFileSync('cordis.patch.yml', 'utf8')
 
-test('development target and host compatibility metadata agree', () => {
-  const range = pkg.peerDependencies['@deepseek-ai/dsh']
-  assert.equal(pkg.engines.dsh, range)
-  assert.ok(semver.valid(pkg.config.dshVersion))
-  assert.ok(semver.satisfies(pkg.config.dshVersion, range, { includePrerelease: true }))
+test('development follows stable DSH while host admission is unbounded', () => {
+  assert.equal(pkg.config.dshVersion, 'stable')
+  assert.equal(pkg.engines.dsh, '*')
+  assert.equal(pkg.peerDependencies['@deepseek-ai/dsh'], '*')
+  for (const version of ['0.0.1', '0.2.1-rc.4', '100.0.0'])
+    assert.equal(
+      semver.satisfies(version, pkg.engines.dsh, { includePrerelease: true }),
+      true,
+    )
   assert.equal(pkg.peerDependenciesMeta['@deepseek-ai/dsh'].optional, true)
   assert.match(fs.readFileSync('pnpm-workspace.yaml', 'utf8'), /^autoInstallPeers: false$/m)
 })

@@ -18,7 +18,7 @@ Write them into a local tracker `.research/listings.md` (RED Research, ignored b
 
 - Repository URL and npm package name
 - One factual sentence in English and in Chinese: what the plugin does, no marketing
-- Install command, license, required DSH version and profile
+- Install command, license, any declared DSH version gate, versions actually verified and profile
 - Category (UI and themes, tools, models, workflow, …)
 - Permissions and data flow: network access, credentials, files written. Directories ask, and users care.
 

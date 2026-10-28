@@ -15,7 +15,7 @@ body:
     attributes:
       label: DSH version
       description: Output of `dsh --version`.
-      placeholder: '{{DSH_VERSION}}'
+      placeholder: Paste the output of `dsh --version`.
     validations:
       required: true
   - type: textarea

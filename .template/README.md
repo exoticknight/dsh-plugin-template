@@ -4,7 +4,7 @@
 
 简体中文 | [English](README.en.md)
 
-<!-- npm:start -->[![npm](https://img.shields.io/npm/v/dsh-plugin-template?logo=npm)](https://www.npmjs.com/package/dsh-plugin-template) <!-- npm:end -->[![CI](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml/badge.svg)](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/{{OWNER}}/dsh-plugin-template?sort=semver)](https://github.com/{{OWNER}}/dsh-plugin-template/releases/latest) [![License](https://img.shields.io/github/license/{{OWNER}}/dsh-plugin-template)](LICENSE) ![DSH](https://img.shields.io/badge/DSH-{{DSH_VERSION_BADGE}}-blue) [![Maintained with RED](https://img.shields.io/badge/maintained_with-RED-C1121F)](https://github.com/exoticknight/red)
+<!-- npm:start -->[![npm](https://img.shields.io/npm/v/dsh-plugin-template?logo=npm)](https://www.npmjs.com/package/dsh-plugin-template) <!-- npm:end -->[![CI](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml/badge.svg)](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/{{OWNER}}/dsh-plugin-template?sort=semver)](https://github.com/{{OWNER}}/dsh-plugin-template/releases/latest) [![License](https://img.shields.io/github/license/{{OWNER}}/dsh-plugin-template)](LICENSE) [![Maintained with RED](https://img.shields.io/badge/maintained_with-RED-C1121F)](https://github.com/exoticknight/red)
 
 <!-- Listing badges: add a row here only after each listing is confirmed. See playbooks/reference/badges.md. -->
 
@@ -12,8 +12,8 @@ TODO：一句话说明插件为用户做什么（与 package.json description �
 
 <!-- client:start -->
 
-<!-- 主截图或 GIF：放在 docs/images/，使用绝对地址，例如
-![在 DSH {{DSH_VERSION}} 中使用 {{PLUGIN_TITLE}}](https://raw.githubusercontent.com/{{OWNER}}/dsh-plugin-template/main/docs/images/hero.jpg)
+<!-- 主截图或 GIF：放在 docs/images/，使用绝对地址，并在图注中标注截图对应的 DSH 版本，例如
+![在 DeepSeek Harness 中使用 {{PLUGIN_TITLE}}](https://raw.githubusercontent.com/{{OWNER}}/dsh-plugin-template/main/docs/images/hero.jpg)
 -->
 
 <!-- client:end -->
@@ -24,7 +24,7 @@ TODO：一句话说明插件为用户做什么（与 package.json description �
 
 ## 安装
 
-环境要求：DeepSeek Harness 版本满足 `{{DSH_COMPAT_RANGE}}`，使用 `{{DSH_PROFILE}}` profile。开发目标为 `{{DSH_VERSION}}`，实际验证结果见兼容性记录。
+模板不声明 DSH 安装版本门槛；插件使用的 API 是否可用，请以兼容性记录中的实际验证为准。使用 `{{DSH_PROFILE}}` profile。
 
 <!-- npm:start -->
 

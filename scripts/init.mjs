@@ -1,15 +1,13 @@
 // Turns this template into a concrete plugin. Runs once; deletes itself.
 //
 //   node scripts/init.mjs --name dsh-foo --owner my-github \
-//     [--dsh-version 0.2] [--title "Foo"] [--description "..."]
-//     [--author "Me"] [--dsh-min 0.2.0-rc.2] [--keywords a,b]
+//     [--title "Foo"] [--description "..."] [--author "Me"] [--keywords a,b]
 //     [--host-only] [--no-npm] [--dry-run]
 //
 // See playbooks/00-init.md for how to choose each value.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { chooseDshVersion, exactDshVersion, dshCompatibility } from './dsh-version.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const TEMPLATE_NAME = 'dsh-plugin-template'
@@ -23,11 +21,9 @@ const flags = new Set(['host-only', 'no-npm', 'dry-run'])
 const options = new Set([
   'name',
   'owner',
-  'dsh-version',
   'title',
   'description',
   'author',
-  'dsh-min',
   'keywords',
 ])
 const args = {}
@@ -60,13 +56,7 @@ if (!name.startsWith('dsh-'))
 if (!args.owner) fail('--owner (GitHub user or organization) is required.')
 if (!/^[A-Za-z0-9](?:-?[A-Za-z0-9])*$/.test(args.owner))
   fail(`--owner ${args.owner} is not a GitHub user or organization name.`)
-let compatibility
-try {
-  args['dsh-version'] = await chooseDshVersion(args['dsh-version'])
-  args['dsh-min'] = exactDshVersion(args['dsh-min'] ?? args['dsh-version'])
-  compatibility = dshCompatibility(args['dsh-version'], args['dsh-min'])
-} catch (error) { fail(error.message) }
-console.log(`DSH target: ${args['dsh-version']}; compatibility: ${compatibility}`)
+console.log('DSH compatibility: unrestricted; development uses the latest stable release.')
 
 const hostOnly = Boolean(args['host-only'])
 const title =
@@ -82,11 +72,6 @@ const values = {
   '{{DESCRIPTION}}': args.description ?? `${title} for DeepSeek Harness.`,
   '{{OWNER}}': args.owner,
   '{{AUTHOR}}': args.author ?? args.owner,
-  '{{DSH_VERSION}}': args['dsh-version'],
-  // shields.io static badges use '-' as a separator.
-  '{{DSH_VERSION_BADGE}}': args['dsh-version'].replace(/-/g, '--').replace(/_/g, '__'),
-  '{{DSH_MIN_VERSION}}': args['dsh-min'] ?? args['dsh-version'],
-  '{{DSH_COMPAT_RANGE}}': compatibility,
   '{{DSH_PROFILE}}': hostOnly ? 'headless' : 'web',
 }
 
@@ -169,9 +154,9 @@ const nextPkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'), (_, value) =>
   typeof value === 'string' ? substitute(value) : value,
 )
 nextPkg.version = '0.1.0'
-nextPkg.config = { ...nextPkg.config, dshVersion: args['dsh-version'] }
-nextPkg.engines = { ...nextPkg.engines, dsh: compatibility }
-nextPkg.peerDependencies = { ...nextPkg.peerDependencies, '@deepseek-ai/dsh': compatibility }
+nextPkg.config = { ...nextPkg.config, dshVersion: 'stable' }
+nextPkg.engines = { ...nextPkg.engines, dsh: '*' }
+nextPkg.peerDependencies = { ...nextPkg.peerDependencies, '@deepseek-ai/dsh': '*' }
 nextPkg.peerDependenciesMeta = { ...nextPkg.peerDependenciesMeta, '@deepseek-ai/dsh': { optional: true } }
 delete nextPkg.scripts.init
 // The token pass renamed the template; restore its credit.
@@ -197,9 +182,12 @@ write(pkgPath, JSON.stringify(nextPkg, null, 2) + '\n')
 
 // The plugin README skeletons (already filled in above) replace the template's.
 for (const file of readmes) {
+  const source = path.join(skeletons, file)
+  const destination = path.join(root, file)
+  let text = fs.readFileSync(source, 'utf8')
+  text = substitute(text)
   changes.push(`copy   .template/${file} -> ${file}`)
-  if (!dryRun)
-    fs.copyFileSync(path.join(skeletons, file), path.join(root, file))
+  if (!dryRun) fs.writeFileSync(destination, text)
 }
 remove(skeletons)
 remove(path.join(root, 'scripts/init.mjs'))

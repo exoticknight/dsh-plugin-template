@@ -1,7 +1,7 @@
 // Development install: this checkout, linked into the isolated DSH home
 // `.dsh-dev/` inside the repository. Your daily DSH home is never touched.
 //
-//   node scripts/dev.mjs cli [version]  install DSH (default: package.json config.dshVersion) into .dsh-cli
+//   node scripts/dev.mjs cli            install the latest stable DSH into .dsh-cli
 //   node scripts/dev.mjs install        link this checkout into .dsh-dev
 //   node scripts/dev.mjs start          install, then start the web profile on a free port
 //   node scripts/dev.mjs run <args...>  run any dsh command against .dsh-dev
@@ -12,7 +12,10 @@
 import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
-import { DEFAULT_DSH_VERSION, exactDshVersion } from './dsh-version.mjs'
+import {
+  DEFAULT_DSH_SELECTOR,
+  latestStableDshVersion,
+} from './dsh-version.mjs'
 import {
   assertInstalled,
   assertMounted,
@@ -42,10 +45,23 @@ if (command === 'clean') {
 }
 
 if (command === 'cli') {
-  const requested = rest[0] ?? pkg.config?.dshVersion ?? DEFAULT_DSH_VERSION
-  const version = requested === '0.2' ? exactDshVersion(requested) : requested
-  if (!/^[0-9A-Za-z.-]+$/.test(version))
-    throw new Error(`Not a DSH version or dist-tag: ${version}.`)
+  if (rest.length) {
+    console.error(
+      'dev: pnpm dev:cli always installs the latest stable DSH release; pass no version.',
+    )
+    process.exit(1)
+  }
+  const requested = pkg.config?.dshVersion ?? DEFAULT_DSH_SELECTOR
+  if (requested !== 'stable')
+    throw new Error(`Expected config.dshVersion to be "stable", found "${requested}".`)
+  let version
+  try {
+    version = latestStableDshVersion()
+  } catch (error) {
+    console.error(`dev: ${error.message}`)
+    process.exit(1)
+  }
+  console.log(`Installing latest stable DSH ${version} into ${cliDir}.`)
   // npm, not pnpm: .dsh-cli is a standalone tool directory outside this
   // workspace. No install scripts run; DSH works without them.
   const install = spawnSync(
