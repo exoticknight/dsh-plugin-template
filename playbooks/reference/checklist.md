@@ -4,7 +4,7 @@ Everything a DSH plugin built from this template should have, inside and outside
 
 ## Repository
 
-Version policy: ask for the target during initialization; unavailable input defaults to `0.2.0-rc.2` (`0.2`). Keep `config.dshVersion`, the optional `@deepseek-ai/dsh` peer, `engines.dsh` and compatibility docs synchronized. Keep `autoInstallPeers: false` in pnpm workspace settings. Only record verification after actual host/client checks.
+Version policy: no DSH release is blocked by package metadata (`engines.dsh` and the optional `@deepseek-ai/dsh` peer are `*`). `config.dshVersion` is `stable`; `pnpm dev:cli` installs the newest stable SemVer version published on npm and ignores prereleases. Keep `autoInstallPeers: false` in pnpm workspace settings. Only record verification after actual host/client checks.
 
 | Item                         | Expectation                                                                                                                                                                             | Check                                       |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
@@ -31,7 +31,7 @@ Version policy: ask for the target during initialization; unavailable input defa
 | Dependabot                   | Actions + npm dev dependencies weekly; `@deepseek-ai/*` ignored                                                                                                                         | `.github/dependabot.yml`                    |
 | Issue templates              | Bug report asks for plugin and DSH version                                                                                                                                              | `.github/ISSUE_TEMPLATE/`                   |
 | Docs                         | `README.md` (Chinese) + `README.en.md` link to the plugin's GitHub Releases for version history; `CONTRIBUTING.md`, `SECURITY.md`, `docs/development.md`, `docs/compatibility.md` | |
-| README badges | Row 1: npm (if published), CI, Release, License, DSH version, RED. Row 2: confirmed listings only, none by default. Every plugin badge uses this plugin's owner/name (`badges.md`) | |
+| README badges | Row 1: npm (if published), CI, Release, License, RED. Row 2: confirmed listings only, none by default. Every plugin badge uses this plugin's owner/name (`badges.md`) | |
 | Images                       | Under `docs/images/`, `export-ignore`, linked by absolute `raw.githubusercontent.com` URLs so npm renders them                                                                          |                                             |
 | RED                          | `red.toml` + `RED.md`; `.research/` and `.evolve/` local-only                                                                                                                           | `red check --json`                          |
 | Agent entry                  | `AGENTS.md` (+ `CLAUDE.md` → `@AGENTS.md`) and `playbooks/`                                                                                                                             |                                             |

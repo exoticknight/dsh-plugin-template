@@ -4,7 +4,7 @@
 
 [简体中文](README.md) | English
 
-<!-- npm:start -->[![npm](https://img.shields.io/npm/v/dsh-plugin-template?logo=npm)](https://www.npmjs.com/package/dsh-plugin-template) <!-- npm:end -->[![CI](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml/badge.svg)](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/{{OWNER}}/dsh-plugin-template?sort=semver)](https://github.com/{{OWNER}}/dsh-plugin-template/releases/latest) [![License](https://img.shields.io/github/license/{{OWNER}}/dsh-plugin-template)](LICENSE) ![DSH](https://img.shields.io/badge/DSH-{{DSH_VERSION_BADGE}}-blue) [![Maintained with RED](https://img.shields.io/badge/maintained_with-RED-C1121F)](https://github.com/exoticknight/red)
+<!-- npm:start -->[![npm](https://img.shields.io/npm/v/dsh-plugin-template?logo=npm)](https://www.npmjs.com/package/dsh-plugin-template) <!-- npm:end -->[![CI](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml/badge.svg)](https://github.com/{{OWNER}}/dsh-plugin-template/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/{{OWNER}}/dsh-plugin-template?sort=semver)](https://github.com/{{OWNER}}/dsh-plugin-template/releases/latest) [![License](https://img.shields.io/github/license/{{OWNER}}/dsh-plugin-template)](LICENSE) [![Maintained with RED](https://img.shields.io/badge/maintained_with-RED-C1121F)](https://github.com/exoticknight/red)
 
 <!-- Listing badges: add a row here only after each listing is confirmed. See playbooks/reference/badges.md. -->
 
@@ -12,8 +12,8 @@
 
 <!-- client:start -->
 
-<!-- Hero screenshot or GIF: store it in docs/images/ and use an absolute URL, e.g.
-![{{PLUGIN_TITLE}} in DSH {{DSH_VERSION}}](https://raw.githubusercontent.com/{{OWNER}}/dsh-plugin-template/main/docs/images/hero.jpg)
+<!-- Hero screenshot or GIF: store it in docs/images/, use an absolute URL, and caption it with the DSH version shown, e.g.
+![{{PLUGIN_TITLE}} in DeepSeek Harness](https://raw.githubusercontent.com/{{OWNER}}/dsh-plugin-template/main/docs/images/hero.jpg)
 -->
 
 <!-- client:end -->
@@ -24,7 +24,7 @@
 
 ## Install
 
-Requirements: DeepSeek Harness matching `{{DSH_COMPAT_RANGE}}` (development target: `{{DSH_VERSION}}`; verification records below) with a `{{DSH_PROFILE}}` profile.
+No DSH version floor is declared in package metadata; feature compatibility depends on the DSH APIs in use. See the verification record. Use a `{{DSH_PROFILE}}` profile.
 
 <!-- npm:start -->
 

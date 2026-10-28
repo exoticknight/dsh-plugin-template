@@ -9,9 +9,9 @@ Dependabot opens weekly grouped PRs for GitHub Actions (pinned by SHA) and npm d
 ## New DSH version
 
 1. Read the DSH release notes for changes to the services, slots, routes and DOM anchors listed in `docs/compatibility.md` → Integration contracts.
-2. Set `config.dshVersion` to the exact target. Update the optional `@deepseek-ai/dsh` peer and matching `engines.dsh` range (exact target by default, or a verified bounded range), plus any other `@deepseek-ai/*` dev/peer dependencies. DSH checks its own package peers using prerelease-aware semver; `engines.dsh` alone does not enforce compatibility. Run `pnpm install` and `pnpm verify`.
-3. Audit client module requests against the target version: replace obsolete imports; declare non-baseline requests in `dsh.client.external` and Cordis services in source `inject`. `dsh.client.inject` is informational metadata. Run the plugin on the new version (`pnpm dev:cli <version>`, then `pnpm dev`) and confirm host activation and client activation in the browser, then repeat the checks in `docs/compatibility.md` → Manual verification.
-4. Update the verified version in `docs/compatibility.md`, the README DSH badge (both languages) and the placeholder in `.github/ISSUE_TEMPLATE/bug_report.yml`. Raise the minimum only when the plugin really needs the new version.
+2. Keep `config.dshVersion` set to `stable`, and keep both `engines.dsh` and the optional `@deepseek-ai/dsh` peer at `*` so no DSH release is rejected by package metadata. `pnpm dev:cli` resolves the latest stable release for local verification. Update any other `@deepseek-ai/*` dev/peer dependencies to the versions provided by that host, then run `pnpm install` and `pnpm verify`.
+3. Audit client module requests against the verified stable version: replace obsolete imports; declare non-baseline requests in `dsh.client.external` and Cordis services in source `inject`. `dsh.client.inject` is informational metadata. Run `pnpm dev:cli` to install the latest stable DSH, then `pnpm dev`; confirm host activation and client activation in the browser, then repeat the checks in `docs/compatibility.md` → Manual verification.
+4. Record the verified version in `docs/compatibility.md` and update any README compatibility statement that names a tested version. The package remains unbounded; do not add a version badge or minimum just because the development target advanced.
 5. Release (30-release), even if no code changed, so users can see the plugin is verified on the new version.
 
 ## Node.js

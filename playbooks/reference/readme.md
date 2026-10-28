@@ -19,7 +19,7 @@ Write for 1 first, keep 2 complete, and never break 3.
 | One-sentence description      | yes                        | What the plugin does for the user, in one sentence. The English one equals `package.json` `description` and the GitHub description.                          |
 | Hero image or GIF             | for anything with UI       | One screenshot or short GIF of the main feature in use. Caption with the DSH version it was captured on.                                                     |
 | Features (功能)               | yes                        | 3–6 bullets. Start each with the benefit in bold, then how. Only what exists today.                                                                           |
-| Install (安装)                | yes                        | Requirements (bounded supported DSH range, development target and actual verification, profile), npm command, pinned GitHub command, "restart DSH". Facts: [installing.md](installing.md).                  |
+| Install (安装)                | yes                        | DSH version gate (if any), profile and actual verification, npm command, pinned GitHub command, "restart DSH". Facts: [installing.md](installing.md).                  |
 | Usage (使用)                  | yes                        | Numbered first-use steps. Name the exact UI path with its real labels, e.g. **设置 → 插件 → Foo** / **Settings → Plugins → Foo**.                              |
 | Configuration (配置)          | if there are settings      | Table: key, default, meaning. Say where each value is stored. Credentials: say they go to the DSH credential store and are masked.                           |
 | Update, roll back, remove     | yes                        | Absolute link to this plugin's GitHub Releases for version history (also works on npm), commands with an exact version (`<name>@X.Y.Z`, `#vX.Y.Z`), and what stays behind after removal. |
@@ -60,7 +60,7 @@ Write for 1 first, keep 2 complete, and never break 3.
 | New or changed feature, setting, UI path | Features, Usage, Configuration, screenshots                     |
 | New network access, stored data, or file | Privacy and data                                                |
 | Release                                  | Pinned `#vX.Y.Z` install command (30-release)                   |
-| New verified DSH version                 | Requirements line, DSH badge, Compatibility                     |
+| New verified DSH version                 | Verification record and Compatibility                            |
 | Confirmed directory listing              | Badge row 2 (50-listings)                                       |
 
 README changes are Document changes under RED: propose them with the code change and get the user's approval before committing.
