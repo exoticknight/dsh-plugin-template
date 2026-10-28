@@ -6,7 +6,7 @@ AI agents: start at [AGENTS.md](../AGENTS.md), which routes each task to a playb
 
 - Node.js `^22.19.0 || >=24.0.0`
 - pnpm, at the version pinned by `packageManager` (`corepack enable` picks it up)
-- A stable DSH CLI for local testing: `pnpm dev:cli` installs the latest stable npm release into `.dsh-cli/`, used only for this repository (see Isolated DSH). It stops with an error if npm has no stable release.
+- A DSH CLI for local testing: `pnpm dev:cli` installs the latest stable npm release into `.dsh-cli/`; if npm has no stable release, it falls back to the highest published prerelease SemVer version. The directory is used only for this repository (see Isolated DSH).
 
 ## Setup
 
@@ -42,7 +42,7 @@ pnpm verify
 | `pnpm check:package` | List the npm tarball contents and check them                |
 | `pnpm check:release` | Release gate: tag, version, metadata, leftover placeholders |
 | `pnpm verify`        | Everything CI runs                                          |
-| `pnpm dev:cli`       | Install the latest stable DSH release into `.dsh-cli` for testing; fail if none is published |
+| `pnpm dev:cli`       | Install the latest stable DSH release, or highest prerelease if none exists, into `.dsh-cli` |
 | `pnpm dev`           | Link this checkout into `.dsh-dev` and start the web profile |
 | `pnpm dev:install`   | Link into `.dsh-dev` without starting DSH                   |
 | `pnpm dev:dsh …`     | Run any dsh command against `.dsh-dev`                      |
@@ -53,7 +53,7 @@ pnpm verify
 
 All local testing happens in `.dsh-dev/`, a DSH home inside the repository. Your daily DSH home (`~/.dsh`) is never used.
 
-Initialization does not set a DSH version floor: `engines.dsh` and the optional `@deepseek-ai/dsh` host peer are both `*`. DSH checks `engines.dsh` first and consults the host peer only when that field is absent. `config.dshVersion: "stable"` is consumed by this repository's development tooling; it is not a DSH runtime setting. `pnpm dev:cli` resolves the highest stable SemVer release published on npm each time it runs and refuses to fall back to prereleases when none exists. `pnpm-workspace.yaml` sets `autoInstallPeers: false` so a normal workspace install does not pull in the CLI; install additional development peers explicitly.
+Initialization does not set a DSH version floor: `engines.dsh` and the optional `@deepseek-ai/dsh` host peer are both `*`. DSH checks `engines.dsh` first and consults the host peer only when that field is absent. `config.dshVersion: "stable"` is consumed by this repository's development tooling; it is not a DSH runtime setting. `pnpm dev:cli` resolves the highest stable SemVer release published on npm; if no stable version exists, it selects the highest published prerelease SemVer version instead of following the `latest` dist-tag. `pnpm-workspace.yaml` sets `autoInstallPeers: false` so a normal workspace install does not pull in the CLI; install additional development peers explicitly.
 
 - `pnpm dev` links this checkout into `.dsh-dev` with `dsh plugin --profile <profile> add .`, checks that the install really landed there, and starts the web profile on a free port without opening a browser. The printed link contains a login token; do not share it.
 - The install is a link: after a change, run `pnpm build`, stop DSH with `Ctrl+C`, and run `pnpm dev` again.

@@ -56,7 +56,7 @@ if (!name.startsWith('dsh-'))
 if (!args.owner) fail('--owner (GitHub user or organization) is required.')
 if (!/^[A-Za-z0-9](?:-?[A-Za-z0-9])*$/.test(args.owner))
   fail(`--owner ${args.owner} is not a GitHub user or organization name.`)
-console.log('DSH compatibility: unrestricted; development uses the latest stable release.')
+console.log('DSH compatibility: unrestricted; development prefers stable and falls back to the latest prerelease.')
 
 const hostOnly = Boolean(args['host-only'])
 const title =

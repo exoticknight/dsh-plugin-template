@@ -5,17 +5,20 @@ import { spawnSync } from 'node:child_process'
 import { test } from 'node:test'
 import {
   DEFAULT_DSH_SELECTOR,
-  latestStableDshVersion,
+  latestDshVersion,
 } from '../scripts/dsh-version.mjs'
 
-test('stable is the default and only stable semver releases are selected', () => {
+test('the newest stable release is preferred, with the newest prerelease as fallback', () => {
   assert.equal(DEFAULT_DSH_SELECTOR, 'stable')
-  assert.equal(latestStableDshVersion({
+  assert.deepEqual(latestDshVersion({
     getVersions: () => ['0.9.0', '1.1.0-rc.1', '1.0.0', '1.0.1-alpha.1'],
-  }), '1.0.0')
+  }), { version: '1.0.0', channel: 'stable' })
+  assert.deepEqual(latestDshVersion({
+    getVersions: () => ['0.2.1-rc.2', '0.2.1-rc.4', '0.2.1-alpha.5'],
+  }), { version: '0.2.1-rc.4', channel: 'prerelease' })
   assert.throws(
-    () => latestStableDshVersion({ getVersions: () => ['0.2.1-rc.2', '0.3.0-alpha.1'] }),
-    /No stable @deepseek-ai\/dsh version/,
+    () => latestDshVersion({ getVersions: () => [] }),
+    /No @deepseek-ai\/dsh version is published/,
   )
 })
 
@@ -88,5 +91,5 @@ test('dev:cli refuses a version override', () => {
     encoding: 'utf8',
   })
   assert.equal(result.status, 1)
-  assert.match(result.stderr, /always installs the latest stable DSH release/)
+  assert.match(result.stderr, /latest stable DSH, or the latest prerelease when no stable exists/)
 })

@@ -3,7 +3,7 @@
 | Item            | Value                                                               |
 | --------------- | ------------------------------------------------------------------- |
 | DSH install gate | None (`engines.dsh` and optional host peer are `*`)                 |
-| Local dev CLI    | Latest stable npm release                                           |
+| Local dev CLI    | Latest stable; highest prerelease if no stable is published        |
 | Verified DSH     | Pending plugin-specific verification                                |
 | Node.js          | `^22.19.0 \|\| >=24.0.0`                                           |
 | Profile          | `{{DSH_PROFILE}}`                                                   |
@@ -25,6 +25,6 @@ Template baseline checked on 2026-10-04 with Windows, Node 24.20.0 and DSH 0.2.0
 
 <!-- template:end -->
 
-Record the exact DSH version and observed host/client behavior for each verification. A wildcard install gate does not verify runtime compatibility. `pnpm smoke` checks installation and merged configuration only; confirm runtime activation with `pnpm dev` and the browser. `pnpm dev:cli` resolves the latest stable npm release and stops if no stable release is available; it does not choose a prerelease.
+Record the exact DSH version and observed host/client behavior for each verification. A wildcard install gate does not verify runtime compatibility. `pnpm smoke` checks installation and merged configuration only; confirm runtime activation with `pnpm dev` and the browser. `pnpm dev:cli` prefers the latest stable npm release and falls back to the highest published prerelease SemVer version only when no stable version exists; it does not rely on the `latest` dist-tag.
 
 - TODO

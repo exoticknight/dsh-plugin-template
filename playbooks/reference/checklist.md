@@ -4,7 +4,7 @@ Everything a DSH plugin built from this template should have, inside and outside
 
 ## Repository
 
-Version policy: no DSH release is blocked by package metadata (`engines.dsh` and the optional `@deepseek-ai/dsh` peer are `*`). `config.dshVersion` is `stable`; `pnpm dev:cli` installs the newest stable SemVer version published on npm and ignores prereleases. Keep `autoInstallPeers: false` in pnpm workspace settings. Only record verification after actual host/client checks.
+Version policy: no DSH release is blocked by package metadata (`engines.dsh` and the optional `@deepseek-ai/dsh` peer are `*`). `config.dshVersion` is `stable`; `pnpm dev:cli` prefers the newest stable SemVer version published on npm and falls back to the highest prerelease if none exists. It selects from the complete npm version list, not dist-tags. Keep `autoInstallPeers: false` in pnpm workspace settings. Only record verification after actual host/client checks.
 
 | Item                         | Expectation                                                                                                                                                                             | Check                                       |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |

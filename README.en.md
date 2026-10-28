@@ -96,7 +96,7 @@ The agent does everything else.
 
 **Copy, then an agent.** Click **Use this template** above (or clone the repository), open it with your agent and say _"initialize this plugin"_.
 
-Initialization declares no DSH version gate: `engines.dsh` and the optional DSH host peer are both `*`. DSH checks `engines.dsh` for compatibility and falls back to the host peer only when that field is absent. For local development, `pnpm dev:cli` installs the newest stable release from npm; if none is published, it reports an error rather than falling back to a prerelease. Actual plugin compatibility still depends on the DSH APIs it uses, so record and consult the verification results.
+Initialization declares no DSH version gate: `engines.dsh` and the optional DSH host peer are both `*`. DSH checks `engines.dsh` for compatibility and falls back to the host peer only when that field is absent. For local development, `pnpm dev:cli` prefers the newest stable npm release; if none is published, it installs the highest available prerelease SemVer instead of trusting a potentially stale `latest` tag. Actual plugin compatibility still depends on the DSH APIs it uses, so record and consult the verification results.
 
 **Fully manual.** Requirements: Node.js `^22.19.0 || >=24`, pnpm, git, a logged-in GitHub CLI; a DSH CLI for local testing.
 
