@@ -52,6 +52,8 @@ gh api -X PUT repos/$O/$N/actions/permissions/workflow \
 
 The npm Trusted Publisher is bound to this environment. Only `v*` tags may deploy to it.
 
+First check whether browser automation and a suitable GitHub session are available. In the repository, open **Settings → Environments** and create or inspect `npm`; set its deployment policy to selected tags matching `v*`. Verify the environment and policy before continuing. If no suitable browser is available or the UI cannot express the tag-only policy, explain that and use the CLI commands below. Do not switch tools to get around an access denial.
+
 ```sh
 echo '{"deployment_branch_policy":{"protected_branches":false,"custom_branch_policies":true}}' \
   | gh api -X PUT repos/$O/$N/environments/npm --input -

@@ -59,8 +59,8 @@ Version policy: no DSH release is blocked by package metadata (`engines.dsh` and
 | Item              | Expectation                                                     | Check                                             |
 | ----------------- | --------------------------------------------------------------- | ------------------------------------------------- |
 | Package           | Exists, unscoped, public, correct maintainer                    | `npm view $N name maintainers --json`             |
-| Trusted Publisher | GitHub Actions: `$O` / `$N` / `release.yml` / environment `npm` | npmjs.com → package → Settings (user)             |
-| Publishing access | "Require two-factor authentication and disallow tokens"         | npmjs.com → package → Settings (user)             |
+| Trusted Publisher | GitHub Actions: `$O` / `$N` / `release.yml` / environment `npm`; allows `npm publish` used by the workflow; first successful publish validates it within 2 days | npmjs.com → package → Settings (user)             |
+| Publishing access | After OIDC is verified, "Require two-factor authentication and disallow tokens" | npmjs.com → package → Settings (user)             |
 | Provenance        | Present on releases published by CI                             | `npm view $N dist.attestations.provenance --json` |
 | dist-tags         | `latest` = newest stable; `next` only for prereleases           | `npm view $N dist-tags --json`                    |
 
