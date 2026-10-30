@@ -25,6 +25,7 @@ This file is loaded for every task. It holds only what always applies. Everythin
 - **READMEs are for plugin users.** `README.md` (Chinese, primary) and `README.en.md` never contain agent instructions; those live here and in `playbooks/`.
 - **Document files need approval.** `README*`, `CONTRIBUTING.md` and `docs/**` change only with the user's approval unless the task asks for it ([RED.md](RED.md)).
 - **Keep the `template` field in `package.json`.** It credits the template.
+- **For npm release setup, consider the browser before the CLI.** Check whether browser automation and a suitable npm/GitHub session are available; use the site UI to guide the user through supported settings and verify the saved state. The user handles passwords, OTPs and recovery codes. If no suitable browser is available or the specific operation has no supported UI, explain why and use a documented CLI path where one exists. A permission denial or user refusal is a stop, not a reason to switch tools. This preference does not authorize account changes or publishing; the ask-first rules below still apply.
 
 ## Ask first, never do
 
